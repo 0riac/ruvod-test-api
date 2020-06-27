@@ -1,0 +1,45 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "author": "0riac",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^7.3.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.21.2",
+    "nodemon": "^2.0.4"
+  },
+  "dependencies": {
+    "apollo-datasource-rest": "^0.9.2",
+    "apollo-server": "^2.15.0",
+    "apollo-server-express": "^2.15.0",
+    "base64url": "^3.0.1",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^8.2.0",
+    "express-graphql": "^0.9.0",
+    "express-session": "^1.17.1",
+    "fido2-lib": "^2.1.1",
+    "github-auth": "^3.0.2",
+    "graphql": "^15.1.0",
+    "jsonwebtoken": "^8.5.1",
+    "module-alias": "^2.2.2",
+    "mongoose": "^5.9.19",
+    "webauthn": "^0.2.0"
+  },
+  "_moduleAliases": {
+    "~": "src",
+    "helpers": "src/helpers",
+    "resolvers": "src/resolvers",
+    "schemes": "src/schemes/index.js"
+  }
+}
