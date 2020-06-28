@@ -45,8 +45,8 @@ app.get('/logout', controllers.logOut);
 
 app.use('/webauthn', webauthn.initialize());
 
-app.use('/auth/github/callback', controllers.handleGithubCallback, controllers.githubCallbackMiddleware);
-app.use('/auth/github', controllers.githubAuthMiddleware);
+app.use('/auth/github/login',  controllers.githubMiddleware.login);
+app.use('/auth/github', controllers.githubMiddleware.authenticate, controllers.githubAuthMiddleware);
 
 app.use(controllers.authMiddleware);
 app.get('/me', controllers.me);

@@ -3,7 +3,7 @@ const { Client } = require('schemes');
 const githubAuth = require('github-auth');
 // const config = require('../config');
 
-const handleGithubCallback = githubAuth(process.env.GITHUB_ID, process.env.GITHUB_SECRET, {}).authenticate;
+const githubMiddleware = githubAuth(process.env.GITHUB_ID, process.env.GITHUB_SECRET, {});
 
 const githubCallbackMiddleware = (req) => {
   console.log('github auth', req);
@@ -130,7 +130,7 @@ module.exports = {
   authMiddleware,
   logOut,
   me,
-  handleGithubCallback,
+  githubMiddleware,
   githubAuthMiddleware,
   githubCallbackMiddleware,
   afterWebauthn,
