@@ -3,4 +3,4 @@ module.exports = Object.assign({
     origin: 'https://0riac.github.io',
     credentials: true
   }
-}/*, require(`./env/${process.env.NODE_ENV}`)*/);
+}, require(`./env/${process.env.NODE_ENV}`));

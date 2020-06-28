@@ -24,14 +24,6 @@ const app = express();
 
 app.use(cors(config.cors));
 
-// app.use(function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", 'https://0riac.github.io'); // update to match the domain you will make the request from
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
-//   res.setHeader("Access-Control-Allow-Credentials", true);
-//   next();
-// });
-
 app.use(session({
   secret: 'keyboard cat',
   saveUninitialized: true,
@@ -53,11 +45,7 @@ app.get('/logout', controllers.logOut);
 
 app.use('/webauthn', webauthn.initialize());
 
-// Endpoint without passport
-// app.get('/secret', webauthn.authenticate(), (req, res) => {
-//   res.status(200).json({ status: 'ok', message: 'Super Secret!' })
-// })
-app.use('/auth/github/callback', controllers.githubCallbackMiddleware);
+app.use('/auth/github/callback', controllers.handleGithubCallback, controllers.githubCallbackMiddleware);
 app.use('/auth/github', controllers.githubAuthMiddleware);
 
 app.use(controllers.authMiddleware);

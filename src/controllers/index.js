@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken');
 const { Client } = require('schemes');
-// const githubAuth = require('github-auth');
+const githubAuth = require('github-auth');
 // const config = require('../config');
- 
-// const handleGithubCallback = githubAuth(config.github.clientId, config.github.clientSecret).authenticate;
+
+const handleGithubCallback = githubAuth(process.env.GITHUB_ID, process.env.GITHUB_SECRET, {}).authenticate;
 
 const githubCallbackMiddleware = (req) => {
   console.log('github auth', req);
@@ -130,7 +130,7 @@ module.exports = {
   authMiddleware,
   logOut,
   me,
-  // handleGithubCallback,
+  handleGithubCallback,
   githubAuthMiddleware,
   githubCallbackMiddleware,
   afterWebauthn,
