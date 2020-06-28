@@ -90,13 +90,15 @@ const createClient = async (req, res) => {
 
 const afterWebauthn = async (req, res) => {
   const user = req.user;
+  console.log('after webauthn', user);
 
   const client = await Client.findOne({ email: user.username });
 
   if (!client) {
-    const client = new Client({ email: user.username, name: user.name, password: '123123123' });
-    client.save((err, client) => {
+    const newClient = new Client({ email: user.username, name: user.name });
+    newClient.save((err, client) => {
       if (!err) {
+        console.log('created client', client)
         const token = authClient(res, client);
         res.send({ client, token });
       } else {
@@ -104,6 +106,7 @@ const afterWebauthn = async (req, res) => {
       }
     });
   } else {
+    console.log('exist client', client);
     const token = authClient(res, client);
     res.send({ client, token });
   }
