@@ -220,11 +220,11 @@ module.exports = function (clientId, clientSecret, config) {
 			var val = cookie.match('(^|; )' + 'gh_uname' + '=([^;]*)');
 			val = val[2];
 			val = unescape(val);
-			return cookieSign.unsign(val, secret) || null;
+			return JSON.parse(cookieSign.unsign(val, secret)) || null;
 		},
 		authenticate: function (req, res, next) {
 			var cookie = getCookie(req, cookieName);
-			var val = cookie ? cookieSign.unsign(cookie, secret) : false;
+			var val = cookie ? JSON.parse(cookieSign.unsign(cookie, secret)) : false;
 			var updateCode = function () {
 				if (config.autologin) return redirect(ghUrl(req), res);
 				delete req.github;
@@ -292,7 +292,7 @@ module.exports = function (clientId, clientSecret, config) {
 						}
 						var opts = {};
 						if (config.maxAge) opts.expires = new Date(Date.now() + config.maxAge);
-						setCookie(res, cookieName, cookieSign.sign(ghusr, secret), opts);
+						setCookie(res, cookieName, cookieSign.sign(JSON.stringify(ghusr), secret), opts);
 						req.github.user = ghusr;
 						req.github.authenticated = true;
 						if (config.hideAuthInternals && (u.query.code || u.query.state)) {
