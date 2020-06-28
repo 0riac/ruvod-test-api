@@ -187,7 +187,6 @@ class Webauthn {
     const usernameField = this.config.usernameField || options.usernameField
 
     return async (req, res, next) => {
-      console.log('here')
       if (!req.body) {
         return res.status(400).json({ message: 'bad bequest' })
       }
@@ -202,12 +201,10 @@ class Webauthn {
       } = req.body
 
       if (!id || !rawId || !response || !type) {
-        console.log('response missing one or more of id/rawId/response/type fields')
         return res.status(400).json({ message: 'response missing one or more of id/rawId/response/type fields' })
       }
 
       if (type !== 'public-key') {
-        console.log('response type must be \'public-key\'')
         return res.status(400).json({ message: 'response type must be \'public-key\'' })
       }
 
@@ -216,25 +213,21 @@ class Webauthn {
         const json = base64url.decode(response.clientDataJSON)
         clientData = JSON.parse(json)
       } catch (err) {
-        console.log('failed to decode client data')
         return res.status(400).json({ message: 'failed to decode client data' })
       }
 
       const { challenge, origin } = clientData
 
       if (!challenge || challenge !== req.session.challenge) {
-        console.log('mismatched challenge')
         return res.status(400).json({ message: 'mismatched challenge' })
       }
 
       if (!origin || origin !== this.config.origin) {
-        console.log('mismatched origin')
         return res.status(400).json({ message: 'mismatched origin' })
       }
 
       const username = req.session[usernameField]
       if (!username) {
-        console.log(`mismatched ${usernameField}`)
         return res.status(400).json({ message: `mismatched ${usernameField}` })
       }
 

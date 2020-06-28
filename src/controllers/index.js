@@ -95,7 +95,7 @@ const afterWebauthn = async (req, res) => {
   const client = await Client.findOne({ email: user.username });
 
   if (!client) {
-    const newClient = new Client({ email: user.username, name: user.name });
+    const newClient = new Client({ email: user.username, name: user.displayName });
     newClient.save((err, client) => {
       if (!err) {
         console.log('created client', client)
