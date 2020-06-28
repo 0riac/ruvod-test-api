@@ -38,11 +38,10 @@ app.use(cookieParser());
 
 app.get('/auth', controllers.checkAuth);
 app.post('/auth', controllers.auth);
-app.get('/auth/webauthn', webauthn.authenticate(), controllers.afterWebauthn);
 app.post('/createClient', controllers.createClient);
 app.get('/logout', controllers.logOut);
 
-
+app.get('/auth/webauthn', webauthn.authenticate(), controllers.afterWebauthn);
 app.use('/webauthn', webauthn.initialize());
 
 app.use('/auth/github/login',  controllers.githubMiddleware.login);

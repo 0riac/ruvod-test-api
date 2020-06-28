@@ -3,20 +3,6 @@ const { Client } = require('schemes');
 const githubAuth = require('./githubauth');
 // const config = require('../config');
 
-const githubMiddleware = githubAuth(process.env.GITHUB_ID, process.env.GITHUB_SECRET, { authAny: true });
-
-const githubCallbackMiddleware = (req) => {
-  console.log('github auth', req);
-  console.log(req.github);
-  console.log(req.authenticated);
-}
-
-const githubAuthMiddleware = (req) => {
-  console.log('github auth');
-  console.log(req.github);
-  console.log(req.authenticated);
-}
-
 const me = async (req, res) => {
   if (req.client) {
     res.send(req.client);
@@ -120,6 +106,43 @@ const afterWebauthn = async (req, res) => {
   } else {
     const token = authClient(res, client);
     res.send({ client, token });
+  }
+}
+
+const githubMiddleware = githubAuth(process.env.GITHUB_ID, process.env.GITHUB_SECRET, { authAny: true });
+
+const githubCallbackMiddleware = (req) => {
+  console.log('github auth', req);
+  console.log(req.github);
+  console.log(req.authenticated);
+}
+
+const githubAuthMiddleware = async (req, res) => {
+  console.log('github auth');
+  const { github } = req;
+
+  if (github?.authenticated) {
+    const existClient = await Client.findOne({ github_id: github.user.id });
+
+    if (existClient) {
+      console.log('github auth exist client', existClient.name);
+      authClient(res, existClient);
+      res.redirect(`${process.env.APP_URL}${process.env.APP_URL_SUBPATH}`);
+    } else {
+      console.log('github auth create client')
+      const client = new Client({ name: github.user.login, github_id: github.user.id, email: '' });
+      client.save((err, client) => {
+        if (!err) {
+          authClient(res, client);
+          res.redirect(`${process.env.APP_URL}${process.env.APP_URL_SUBPATH}`)
+        } else {
+          console.log('github auth error', err);
+          res.redirect(`${process.env.APP_URL}${process.env.APP_URL_SUBPATH}/login`);
+        }
+      });
+    }
+  } else {
+    res.redirect(`${process.env.APP_URL}${process.env.APP_URL_SUBPATH}/login`);
   }
 }
 

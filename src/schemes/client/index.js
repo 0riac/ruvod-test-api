@@ -7,6 +7,7 @@ const ClientSchema = new Schema({
     name: {type: String, default: ''},
     hashedPassword: String,
     salt: String,
+    github_id: String,
 });
 
 ClientSchema.statics.exceptFieldsArray = ['hashedPassword', 'salt'];

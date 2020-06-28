@@ -87,7 +87,7 @@ module.exports = function (clientId, clientSecret, config) {
 				return callback(new Error(`GitHub User has no login, ${body}`), null);
       }
       console.log('json get user', json);
-			callback(null, json.login);
+			callback(null, json);
 		});
 	};
 
@@ -206,7 +206,7 @@ module.exports = function (clientId, clientSecret, config) {
 		return url.format(u);
 	};
 
-	var login = function (req, res, next) {
+	var login = function (req, res) {
 		redirect(ghUrl(req), res);
 	};
 
