@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken');
 const { Client } = require('schemes');
-const githubAuth = require('github-auth');
+const githubAuth = require('./githubauth');
 // const config = require('../config');
 
-const githubMiddleware = githubAuth(process.env.GITHUB_ID, process.env.GITHUB_SECRET, { users: ['0riac', 'mafintosh', 'octocat'] });
+const githubMiddleware = githubAuth(process.env.GITHUB_ID, process.env.GITHUB_SECRET, { authAny: true });
 
 const githubCallbackMiddleware = (req) => {
   console.log('github auth', req);
