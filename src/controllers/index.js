@@ -121,7 +121,7 @@ const githubAuthMiddleware = async (req, res) => {
   console.log('github auth');
   const { github } = req;
 
-  if (github?.authenticated) {
+  if (github.authenticated) {
     const existClient = await Client.findOne({ github_id: github.user.id });
 
     if (existClient) {
