@@ -2,7 +2,7 @@ const WebAuthn = require('./src')
 const LevelAdapter = require('webauthn/src/LevelAdapter')
 
 const webauthn = new WebAuthn({
-  origin: `${process.env.HOST}:${process.env.PORT}`,
+  origin: `${process.env.APP_URL}`,
   usernameField: 'username',
   userFields: {
     username: 'username',
