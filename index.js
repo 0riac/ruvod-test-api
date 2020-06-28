@@ -22,7 +22,7 @@ mongoose.connect(process.env.MONGO_URL);
 
 const app = express();
 
-app.use(cors());
+app.use(cors(config.cors));
 
 // app.use(function(req, res, next) {
 //   res.header("Access-Control-Allow-Origin", 'https://0riac.github.io'); // update to match the domain you will make the request from
