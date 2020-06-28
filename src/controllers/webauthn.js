@@ -10,7 +10,7 @@ const webauthn = new WebAuthn({
   },
   store: new LevelAdapter('db'),
   rpName: 'Stranger Labs, Inc.',
-  enableLogging: true,
+  enableLogging: false,
 })
 
 module.exports = webauthn;

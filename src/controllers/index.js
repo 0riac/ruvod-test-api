@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { Client } = require('schemes');
 const githubAuth = require('./githubauth');
-// const config = require('../config');
 
 const me = async (req, res) => {
   if (req.client) {
@@ -61,7 +60,6 @@ const auth = async (req, res) => {
 
   if (client && client.authenticate(password)) {
     const token = authClient(res, client);
-
     res.send({ token, client });
   }
 
@@ -90,7 +88,6 @@ const createClient = async (req, res) => {
 
 const afterWebauthn = async (req, res) => {
   const user = req.user;
-  console.log('after webauthn', user);
 
   const client = await Client.findOne({ email: user.username });
 
@@ -98,7 +95,6 @@ const afterWebauthn = async (req, res) => {
     const newClient = new Client({ email: user.username, name: user.displayName });
     newClient.save((err, client) => {
       if (!err) {
-        console.log('created client', client)
         const token = authClient(res, client);
         res.send({ client, token });
       } else {
@@ -106,7 +102,6 @@ const afterWebauthn = async (req, res) => {
       }
     });
   } else {
-    console.log('exist client', client);
     const token = authClient(res, client);
     res.send({ client, token });
   }
@@ -114,32 +109,22 @@ const afterWebauthn = async (req, res) => {
 
 const githubMiddleware = githubAuth(process.env.GITHUB_ID, process.env.GITHUB_SECRET, { authAny: true });
 
-const githubCallbackMiddleware = (req) => {
-  console.log('github auth', req);
-  console.log(req.github);
-  console.log(req.authenticated);
-}
-
 const githubAuthMiddleware = async (req, res) => {
-  console.log('github auth');
   const { github } = req;
 
   if (github.authenticated) {
     const existClient = await Client.findOne({ github_id: github.user.id });
 
     if (existClient) {
-      console.log('github auth exist client', existClient.name);
       authClient(res, existClient);
       res.redirect(`${process.env.APP_URL}${process.env.APP_URL_SUBPATH}`);
     } else {
-      console.log('github auth create client')
       const client = new Client({ name: github.user.login, github_id: github.user.id, email: '' });
       client.save((err, client) => {
         if (!err) {
           authClient(res, client);
           res.redirect(`${process.env.APP_URL}${process.env.APP_URL_SUBPATH}`)
         } else {
-          console.log('github auth error', err);
           res.redirect(`${process.env.APP_URL}${process.env.APP_URL_SUBPATH}/login`);
         }
       });
@@ -158,6 +143,5 @@ module.exports = {
   me,
   githubMiddleware,
   githubAuthMiddleware,
-  githubCallbackMiddleware,
   afterWebauthn,
 }

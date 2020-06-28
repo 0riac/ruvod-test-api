@@ -86,7 +86,6 @@ module.exports = function (clientId, clientSecret, config) {
 			if (typeof json.login !== 'string' || json.login === '') {
 				return callback(new Error(`GitHub User has no login, ${body}`), null);
       }
-      console.log('json get user', json);
 			callback(null, json);
 		});
 	};

@@ -25,11 +25,11 @@ const app = express();
 app.use(cors(config.cors));
 
 app.use(session({
-  secret: 'keyboard cat',
+  secret: process.env.SESSION_SECRET,
   saveUninitialized: true,
   resave: false,
   cookie: {
-    maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    maxAge: 24 * 60 * 60 * 1000,
   },
 }))
 
