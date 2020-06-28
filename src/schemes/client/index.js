@@ -10,10 +10,6 @@ const ClientSchema = new Schema({
     github_id: String,
 });
 
-ClientSchema.statics.exceptFieldsArray = ['hashedPassword', 'salt'];
-ClientSchema.statics.removeBannedFields = data => ClientSchema.statics.exceptFieldsArray.forEach(x => { data[x] = undefined; });
-ClientSchema.statics.exceptFields = ClientSchema.statics.exceptFieldsArray.map(x => '-' + x).join(' ');
-
 ClientSchema
 		.virtual('password')
 		.set(function(password) {
