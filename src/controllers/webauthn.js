@@ -1,4 +1,4 @@
-const WebAuthn = require('webauthn')
+const WebAuthn = require('./src')
 const LevelAdapter = require('webauthn/src/LevelAdapter')
 
 const webauthn = new WebAuthn({
