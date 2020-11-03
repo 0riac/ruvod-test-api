@@ -30,8 +30,10 @@ app.use(session({
   resave: false,
   cookie: {
     maxAge: 24 * 60 * 60 * 1000,
-    secure: true,
-    sameSite: 'none'
+    ...(process.env.NODE_ENV === 'dev' ? {} : {
+      secure: true,
+      sameSite: 'none'
+    })
   },
 }))
 

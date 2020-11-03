@@ -29,13 +29,21 @@ const authMiddleware = async (req, res, next) => {
 }
 
 const logOut = async (req, res) => {
-  res.cookie(process.env.JWT_TOKEN_NAME, '')
+  if (process.env.NODE_ENV === 'dev') {
+    res.cookie(process.env.JWT_TOKEN_NAME, '')
+  } else {
+    res.cookie(process.env.JWT_TOKEN_NAME, '', { sameSite: 'none', secure: true })
+  }
   res.send('ok');
 }
 
 const authClient = (res, client) => {
   const token = jwt.sign({ id: client._id }, process.env.JWT_TOKEN_SECRET);
-  res.cookie(process.env.JWT_TOKEN_NAME, token, { maxAge: 9000000, httpOnly: true });
+  if (process.env.NODE_ENV === 'dev') {
+    res.cookie(process.env.JWT_TOKEN_NAME, token, { maxAge: 9000000, httpOnly: true });
+  } else {
+    res.cookie(process.env.JWT_TOKEN_NAME, token, { maxAge: 9000000, httpOnly: true, sameSite: 'none', secure: true });
+  }
   return token;
 }
 
